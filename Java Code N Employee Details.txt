@@ -1,0 +1,83 @@
+import java.util.Scanner;
+
+
+public class ScanEmployee {
+
+	public static void main(String[] args) {
+		Scanner sc = new Scanner(System.in);
+		 
+		System.out.println("Enter No of Employees : ");
+		int count = sc.nextInt();
+		
+		Employee emps[] = new Employee[count];
+		int id=0;
+		String name=null;
+		String gen;
+		float sal = 0;
+		char gender=' ';
+		
+		
+		
+		
+		for(int i = 0; i<count; i++)
+		{
+			System.out.println("Enter Id of employee "+(i+1));
+			id = sc.nextInt();
+			System.out.println("Enter Name of employee "+(i+1));
+			name = sc.next();
+			System.out.println("Enter Salary of employee "+(i+1));
+			sal = sc.nextFloat();
+			System.out.println("Enter Gender of employee "+(i+1));
+			gen = sc.next();
+			gender = gen.charAt(0);
+			
+			emps[i]=new Employee(id,name,sal,gender);
+			
+		}
+		
+		for(int i = 0; i<count; i++)
+		{
+			System.out.println("\nEmployee "+(i+1)+" Details");
+			emps[i].dispEmpDetails();
+		}
+
+	}
+
+}
+*******************************************************************************************************
+
+
+public class Employee {
+	
+		private int empId;		//3 instance variables
+		private String empName;
+		private float empSalary;
+		private char empGender;
+		
+		public Employee(int id, String name , float sal, char gen)
+		{
+			empId	= id;
+			empName	= name;
+			empSalary	= sal;
+			empGender	= gen;
+		}
+		
+		public Employee()
+		{
+			empId	= 0;
+			empName	= "Unknown";
+			empSalary	= 0.0F;
+			empGender	= ' ';
+		}
+
+		public void dispEmpDetails()
+		{
+			System.out.println("Employee ID:	"+empId);
+			System.out.println("Employee Name:	"+empName);
+			System.out.println("Employee Salary:"+empSalary);
+			System.out.println("Employee Gender:"+empGender);
+			System.out.println();
+		}
+
+}
+
