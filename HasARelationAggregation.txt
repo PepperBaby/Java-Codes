@@ -1,0 +1,105 @@
+import java.util.Scanner;
+public class TestEmpAggregationDemo {
+
+	public static void main(String[] args) {
+		Scanner s = new Scanner(System.in);
+		System.out.println("Enter no of Employees: ");
+		int n = s.nextInt();
+		Employee emp[] = new Employee[n];
+		
+		int id,day,month,year;
+		String name;
+		float sal;
+		
+		for (int i = 0; i<n ; i++){
+			System.out.println("Enter Employee " + (i+1) + " ID: ");
+			id = s.nextInt();
+			
+			System.out.println("Enter Employee " + (i+1) + " Name: ");
+			name = s.next();
+			
+			System.out.println("Enter Employee " + (i+1) + " Salary: ");
+			sal = s.nextFloat();
+			
+			System.out.println("Enter Employee " + (i+1) + " Day DOJ: ");
+			day = s.nextInt();
+			
+			System.out.println("Enter Employee " + (i+1) + " Month DOJ: ");
+			month = s.nextInt();
+			
+			System.out.println("Enter Employee " + (i+1) + " Year DOJ: ");
+			year = s.nextInt();
+			
+			Date DOJ = new Date(day,month,year);
+			emp[i] = new Employee(id,name,sal,DOJ);
+		}
+		
+		
+		for(int i =0; i<n; i++)
+		{
+			System.out.println("\n"+emp[i].dispEmpInfo());
+		}
+		
+
+	}
+
+}
+*********************************************************************************************
+
+public class Employee {
+
+		private int empId;
+		private String empName;
+		private float empSal;
+		Date empDOJ;
+		
+		public Employee()
+		{
+			empId = 0;
+			empName = "Unknown";
+			empSal = 0.0F;
+			empDOJ = new Date();
+ 		}
+
+		public Employee(int empId, String empName, float empSal, Date empDOJ) {
+			
+			this.empId = empId;
+			this.empName = empName;
+			this.empSal = empSal;
+			this.empDOJ = empDOJ;
+		}
+
+		
+		public String dispEmpInfo() {
+			return "Employee [empId=" + empId + ", empName=" + empName
+					+ ", empSal=" + empSal + ", empDOJ=" + empDOJ.dispDate() + "]";
+		}
+		
+		
+}
+
+******************************************************************************************************
+
+
+public class Date {
+	
+	private int day;
+	private int month;
+	private int year;
+	
+	public Date() {
+		
+	}
+
+	public Date(int day, int month, int year) {
+		
+		this.day = day;
+		this.month = month;
+		this.year = year;
+	}
+
+	public String dispDate() {
+		return  day + "-" + month + "-" + year ;
+	}
+		
+}
