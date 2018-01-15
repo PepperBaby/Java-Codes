@@ -1,0 +1,213 @@
+***********************Inheritance****************************
+
+public class InheritEmployee {
+	private int empId;
+	private String empName;
+	private float empSal;
+	
+	public InheritEmployee(){
+		
+	}
+
+	public InheritEmployee(int empId, String empName, float empSal) {
+		
+		this.empId = empId;
+		this.empName = empName;
+		this.empSal = empSal;
+	}
+	
+	public String dispEmpInfo()
+	{
+		return "\nEmployee ID: " + empId +
+				"\nEmployee Name: "+empName+
+				"\nEmployee Basic Salary: "+empSal;
+	}
+	
+	public float calcEmpBasicSal()
+	{
+		return empSal;
+	}
+	
+	public float calcEmpAnnualSal()
+	{
+		return calcEmpBasicSal()*12;
+	}
+	
+}
+
+*********************Child Class******************************
+
+
+public class WageEmployee extends InheritEmployee{
+
+	private int noOfHrs;
+	private int ratePerHrs;
+	
+	public WageEmployee() 
+	{
+		super();
+	}
+	
+	public WageEmployee(int empId, String empName, float empSal, 
+							int noOfHrs, int ratePerHrs) 
+	{
+		super(empId, empName, empSal);
+		this.ratePerHrs = ratePerHrs;
+		this.noOfHrs = noOfHrs;	
+	}
+	
+	public float calcEmpBasicSal()   //Function Overriding
+	{
+		return super.calcEmpBasicSal()+(ratePerHrs*noOfHrs*22);
+	}
+	
+	public float calcEmpAnnualSal()
+	{
+		return calcEmpBasicSal()*12;
+	}
+	
+}
+************************SalesManager**************************
+
+public class SalesManager extends WageEmployee{
+	private int noOfSales;
+	private float comm;
+	
+	public SalesManager() 
+	{
+		super();
+	}
+	
+	public SalesManager(int empId, String empName, float empSal, 
+							int noOfHrs, int ratePerHrs,int noOfSales,float comm) 
+	{
+		super(empId, empName, empSal,noOfHrs,ratePerHrs);
+		this.noOfSales = noOfSales;
+		this.comm = comm;	
+	}
+	
+	public float calcEmpBasicSal()   //Function Overriding
+	{
+		return super.calcEmpBasicSal()+(noOfSales*comm*super.calcEmpBasicSal()); 
+//super gives value of immediate parent therefore no need to calc here noOfHrs & ratePerHrs
+	}
+	
+	public float calcEmpAnnualSal()
+	{
+		return calcEmpBasicSal()*12;
+	}
+
+}
+
+**********************Main Class*******************************
+
+
+public class TestInheritEmployee {
+
+	public static void main(String[] args) {
+		InheritEmployee babitha = new InheritEmployee(123,"Babitha",15000); 
+		WageEmployee jyoti = new WageEmployee(121,"Jyoti",12000,400,5); 
+		
+		System.out.println("\nEmployee Info: "+babitha.dispEmpInfo());
+		System.out.println("Employee Monthly Sal: "+babitha.calcEmpBasicSal());
+		System.out.println("Employee Annual Sal: "+babitha.calcEmpAnnualSal());
+		
+		System.out.println("\nWage Employee Info: "+jyoti.dispEmpInfo());
+		System.out.println("Wage Employee Monthly Sal: "+jyoti.calcEmpBasicSal()); //function overridden
+		System.out.println("Wage Employee Annual Sal: "+jyoti.calcEmpAnnualSal());
+		
+		
+		InheritEmployee kitty = new WageEmployee(333,"Kritika",5000,7,500);   //Possible Only Due to Inheritance
+		System.out.println("\nWage Employee Info: "+kitty.dispEmpInfo());
+		System.out.println("Wage Employee Monthly Sal: "+kitty.calcEmpBasicSal()); //function overridden/Dynamic Polymorphism
+		System.out.println("Wage Employee Annual Sal: "+kitty.calcEmpAnnualSal());
+
+		SalesManager Ooha = new SalesManager(555,"Oooha",10000,2,500,3,0.1F);
+		System.out.println("\nWage Sales Manager Info: "+Ooha.dispEmpInfo());
+		System.out.println("Wage Sales Manager Monthly Sal: "+Ooha.calcEmpBasicSal()); //function overridden 2 times
+		System.out.println("Wage Sales Manager Annual Sal: "+Ooha.calcEmpAnnualSal());
+	}
+
+}
+
+**************************For n emp Main Class********************************
+import java.util.Scanner;
+public class InheritEmployeeArray {
+
+	public static void main(String[] args) {
+		Scanner s = new Scanner(System.in);
+		System.out.println("Enter no of employee");
+		int empCount = s.nextInt();
+		
+		InheritEmployee emp[] = new InheritEmployee[empCount];
+		
+		int eId,choice,nHrs=0,rate=0,sale;
+		String eName;
+		float eSal=0.0F,comm=0.0F;
+		
+		for (int index = 0; index < empCount; index++)
+		{
+			System.out.println("\nEnter Emp "+(index+1)+" ID: ");
+			eId = s.nextInt();
+			System.out.println("Enter Emp "+(index+1)+"  Name: ");
+			eName = s.next();
+			System.out.println("Enter Emp "+(index+1)+"  Salary: ");
+			eSal = s.nextFloat();
+			
+			System.out.println("\nWhat type of Emp u want?"+"\n1:Emp\t2:WageEmp\t3:SaleMgr");
+			System.out.println("\nEnter choice!");
+			choice = s.nextInt();
+			
+			switch(choice)
+			{
+			case 1: 
+					emp[index] = new InheritEmployee(eId,eName,eSal);
+					break;
+					
+			case 2:
+					System.out.println("\nEnter no of hrs U have worked.");
+					nHrs = s.nextInt();
+					System.out.println("Enter rate per hr.");
+					rate = s.nextInt();	
+					emp[index] = new WageEmployee(eId,eName,eSal,nHrs,rate);
+					break;
+					
+			default:
+					System.out.println("\nEnter no of hrs U have worked.");
+					nHrs = s.nextInt();
+					System.out.println("Enter rate per hr.");
+					rate = s.nextInt();	
+					System.out.println("Enter no of Sales U have done.");
+					sale = s.nextInt();
+					System.out.println("Enter commission u have got.");
+					comm = s.nextFloat();
+					emp[index] = new SalesManager(eId,eName,eSal,nHrs,rate,sale,comm);
+				
+			}	
+		}
+		System.out.println("___________________________________________________________");
+		for (int index=0; index<empCount ; index++)
+		{
+			if(emp[index] instanceof SalesManager)  //First grandchild
+			{
+			System.out.println("\nSales Manager Info: "+emp[index].dispEmpInfo()+
+					"\nSales Manager Monthly Sal: "+emp[index].calcEmpBasicSal()+
+					"\nSales Manager Annual Sal: "+emp[index].calcEmpAnnualSal());
+			}
+			else if(emp[index] instanceof WageEmployee) //Second child
+			{
+			System.out.println("\nWage Emp Info: "+emp[index].dispEmpInfo()+
+					"\nWage Emp Monthly Sal: "+emp[index].calcEmpBasicSal()
+			+"\nWage Emp Annual Sal: "+emp[index].calcEmpAnnualSal());
+			}
+			else 										//Parent most significant hence keep last
+			{
+			System.out.println("\nEmployee Info: "+emp[index].dispEmpInfo()+
+			"\nEmployee Monthly Sal: "+emp[index].calcEmpBasicSal()+
+			"\nEmployee Annual Sal: "+emp[index].calcEmpAnnualSal());
+			}
+			
+		}
+	}
+
+}

@@ -1,0 +1,184 @@
+************************Enum*******************
+enum Coins
+{
+	PENNY(1),NICKEL(5),DICE(10),DIME(7),QUARTER(25);
+	
+	private final int value;
+	
+	private Coins(int value)
+	{
+		this.value = value;
+	}
+	public int value()
+	{
+		return value;
+	}
+}
+
+enum Gender
+{
+	M,F;
+	
+}
+enum Seasons
+{
+	SUMMER,RAINY,WINTER;
+}
+public class TestEnum {
+
+	public static void main(String[] args) {
+		
+		Gender empGen = Gender.M;
+		System.out.println("Emp gender is: "+empGen);
+		
+		Seasons currentSeason = Seasons.WINTER;
+		Coins myCoin = Coins.NICKEL;
+		System.out.println("Its "+currentSeason);
+		System.out.println(myCoin+ " has a value "+myCoin.value());
+
+	}
+
+}
+*******************************************************************************
+
+***************************Static***************************
+
+public class Emp1 {
+
+	private int empId;
+	private String empName;
+	private float empSal;
+	static int empCount;
+	
+	//getters and setters
+	public int getEmpId() {
+		return empId;
+	}
+	public void setEmpId(int empId) {
+		this.empId = empId;
+	}
+	public String getEmpName() {
+		return empName;
+	}
+	public void setEmpName(String empName) {
+		this.empName = empName;
+	}
+	public float getEmpSal() {
+		return empSal;
+	}
+	public void setEmpSal(float empSal) {
+		this.empSal = empSal;
+	}
+	
+	//Overloaded constructor
+	public Emp1() {
+		
+	}
+	
+	public Emp1(int empId, String empName, float empSal) {
+		super();
+		this.empId = empId;
+		this.empName = empName;
+		this.empSal = empSal;
+		empCount++;
+	}
+	
+	//Display Method 
+	public String dispEmpInfo() {
+		return "Emp1 [empId=" + empId + ", empName=" + empName + ", empSal="
+				+ empSal + "]";
+	}
+	
+	public static void getCount()
+	{
+		System.out.println("Emp Count Is : "+empCount);
+	}
+	
+	static //Static block here called when required i.e emp block is called
+	{
+		System.out.println("Emp Static block: ");
+		empCount = 5;
+	}
+	
+	
+
+}
+************************************************************************
+
+public class TestStaticEmp1 {
+	
+	static   //Static block here is called before class loading
+	{
+		System.out.println("This is TestStaticEmp static block ");
+	}
+
+	public static void main(String[] args) {
+		
+		Emp1 e1 = new Emp1(123,"Babitha", 10000);
+		Emp1 e2 = new Emp1(222,"Jyoti",15000);
+		Emp1 e3 = new Emp1(333,"Kitty",15000);
+		
+		System.out.println(e1.dispEmpInfo());
+		System.out.println(e2.dispEmpInfo());
+		System.out.println(e3.dispEmpInfo());
+		
+		Emp1.getCount();
+		display();
+		//int id = e1.empId; access denied therefore secure use public getter n setter
+	}
+	public static void display(){
+		
+		System.out.println("This is in main static method.");
+	}
+}
+*************************Function Overloading****************************
+//Function Overloading/ static Polymorphism
+
+class Calculator{
+	public void add(int a , int b) //primitive variable
+	{
+		System.out.println("Addition of 2 int : " + (a+b));
+	}
+	public void add(int a , int b, int c)
+	{
+		System.out.println("Addition of 3 int : " + (a+b+c));
+	}
+	public void add(byte a , byte b)
+	{
+		System.out.println("Addition of 2 byte : " + (a+b));
+	}
+	public void add(float a , float b)
+	{
+		System.out.println("Addition of 2 float : " + (a+b));
+	}
+	public void add(double a , double b)
+	{
+		System.out.println("Addition of 2 double : " + (a+b));
+	}
+	public void add(String a , String b)
+	{
+		System.out.println("Addition of 2 String : " + (a+b));
+	}
+	public void add(Integer a , Integer b) //reference variable of integer class/ non primitive
+	{
+		System.out.println("2 Integer wrapper: " + (a+b));
+	}
+	
+}
+public class TestCalculator {
+
+	public static void main(String[] args) {
+		Calculator calc = new Calculator();
+		calc.add(10, 20);
+		calc.add(10, 20, 30);
+		calc.add("Babitha ", "Nadar");
+		calc.add((byte)10,(byte)20); //Down type casting from int to byte 
+		calc.add(10.0,20.0);	//no 'F' for double
+		calc.add(10.0F,20.0F); //Float add 'F'
+		calc.add(new Integer(10), (Integer)20); 
+		//passing object to Integer class or type cast, 
+		//garbage collected as referenced through object stored in heap
+		
+	}
+
+}
