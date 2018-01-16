@@ -1,0 +1,157 @@
+************Medicine***********************************************
+public class Medicine {
+
+    private String expiryDate;
+    private int price;
+    private String medName;
+    private String companyName;
+    
+    public Medicine() {
+        
+    }
+    
+    public Medicine(String expiryDate, int price, String medName,
+            String companyName) {
+        super();
+        this.expiryDate = expiryDate;
+        this.price = price;
+        this.medName = medName;
+        this.companyName = companyName;
+    }
+
+
+
+    public String dispInfo()
+    {
+        return "\nMedicine Name: "+ medName +
+        "\nCompany Name: "+ companyName+
+        "\nMedicine expiry date: "+ expiryDate+
+        "\nMedicine price: "+ price;
+    }
+    
+}
+***********************Tablet**************************
+
+public class Tablet extends Medicine{
+
+    public Tablet() {
+        super();
+    }
+
+    public Tablet(String expiryDate, int price, String medName,
+            String companyName) {
+        super(expiryDate, price, medName, companyName);
+        
+    }
+
+    public String dispInfo(){
+        return super.dispInfo()+
+                "\nStore in cool and dry place!";
+    }
+}
+*******************Ointment*********************
+
+public class Ointment extends Medicine{
+
+    public Ointment() {
+        super();
+    }
+
+    public Ointment(String expiryDate, int price, String medName,
+            String companyName) {
+        super(expiryDate, price, medName, companyName);
+        
+    }
+    
+    public String dispInfo(){
+        return super.dispInfo()+
+                "\nOnly for external use!";
+    }
+}
+*********************Syrup***********************
+
+public class Syrup extends Medicine{
+
+    public Syrup() {
+        super();
+        
+    }
+
+    public Syrup(String expiryDate, int price, String medName,
+            String companyName) {
+        super(expiryDate, price, medName, companyName);
+        
+    }
+    
+    public String dispInfo(){
+        return super.dispInfo()+
+                "\nShake well before use!";
+    }
+    
+
+}
+********************TestMedicine************************
+import java.util.Scanner;
+public class TestMedicine {
+
+    public static void main(String[] args) {
+        Scanner s = new Scanner(System.in);
+        System.out.println("Enter no of medicine");
+        int medCount = s.nextInt();
+        String medName,medCompany,medDate;
+        int medPrice;
+        
+        Medicine med[] = new Medicine[medCount];
+
+        for (int index = 0; index < medCount; index++)
+        {
+            System.out.println("\nEnter Medicine "+(index+1)+" Name: ");
+            medName = s.next();
+            System.out.println("Enter Company "+(index+1)+"  Name: ");
+            medCompany = s.next();
+            System.out.println("Enter Medicine "+(index+1)+"  Date: ");
+            medDate = s.next();
+            System.out.println("Enter Medicine "+(index+1)+"  Price: ");
+            medPrice = s.nextInt();
+            
+            System.out.println("\nWhat type of Medicine u want?"+
+            "\n1:Tablet\t2:Ointment\t3:Syrup");
+            System.out.println("\nEnter choice!");
+            int choice = s.nextInt();
+            
+            switch(choice)
+            {
+            case 1: 
+                    med[index] = new Tablet(medDate,medPrice,medName,medCompany);
+                    break;
+                    
+            case 2:
+                    med[index] = new Ointment(medDate,medPrice,medName,medCompany);
+                    break;
+                    
+            default:
+                    
+                    med[index] = new Syrup(medDate,medPrice,medName,medCompany);
+                
+            }   
+        }
+        
+        for(int index=0; index<medCount; index++)
+        {
+            if(med[index] instanceof Syrup)  //First grandchild
+            {
+            System.out.println("\nSyrup Info: "+med[index].dispInfo());
+            }
+            else if(med[index] instanceof Ointment) //Second child
+            {
+            System.out.println("\nOintment Info: "+med[index].dispInfo());
+            }
+            else    //Parent most significant hence keep last
+            {
+            System.out.println("\nTablet Info: "+med[index].dispInfo());
+            }
+        }
+    }
+
+}
+
