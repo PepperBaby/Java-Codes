@@ -1,0 +1,64 @@
+import static java.lang.Math.*;
+
+class Parent
+{
+	public void print()
+	{
+		System.out.println("Parent: ");
+	}
+	
+	/* ************var array***************** */
+	public int add(int...numbers) 
+	{
+		int sum = 0;
+		for (int i =0; i<numbers.length;i++)
+		{
+			sum = sum+numbers[i];
+			
+		}
+		return sum;
+		
+	}
+}
+class Child extends Parent
+{
+	/* ************Anotation***************** */
+	@Override               
+	public void print()
+	{
+		System.out.println("Child: ");
+	}
+}
+
+public class TestJava5Features {
+
+	public static void main(String[] args) {
+		
+		/* ************Static import***************** */
+		 System.out.println("PI = "+PI);
+		 System.out.println("cube of 2 = "+pow(2,3));
+//calling method of static class not by classname.methodname 
+//but by methodname directly since importing from static class 
+		 Parent p = new Parent();
+		 System.out.println("addition = "+p.add(9, 80,1,2,3,4,5));
+		 
+		 
+		 
+		 /* ************enhance for loop***************** */
+		 System.out.println("Enhance For Loop"); 
+		 int marks[] = new int [3];
+		 marks[0] = 90;
+		 marks[1] = 10;
+		 marks[2] = 80;
+		 String cityList[] ={"Pune","Mumbai","noida","Chennai"}; 
+		 for (int tempMarks: marks)
+		 {
+			 System.out.println(" "+tempMarks);
+		 }
+		 for (String city: cityList)
+		 {
+			 System.out.println(" "+city);
+		 }
+	}
+
+}

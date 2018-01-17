@@ -1,0 +1,88 @@
+*********toString()**************************
+
+public class Person {
+
+	private String perName;
+	private String panNo;
+	private int perAge;
+	
+	//getter and setter
+	public String getPerName() {
+		return perName;
+	}
+	public void setPerName(String perName) {
+		this.perName = perName;
+	}
+	public String getPanNo() {
+		return panNo;
+	}
+	public void setPanNo(String panNo) {
+		this.panNo = panNo;
+	}
+	public int getPerAge() {
+		return perAge;
+	}
+	public void setPerAge(int perAge) {
+		this.perAge = perAge;
+	}
+	
+	
+	//constructor
+	public Person() {
+	}
+	public Person(String perName, String panNo, int perAge) {
+		
+		this.perName = perName;
+		this.panNo = panNo;
+		this.perAge = perAge;
+	}
+
+	@Override
+	//Display method
+	public String toString() {
+		return "Person [perName=" + perName + ", panNo=" + panNo + ", perAge="
+				+ perAge + "]";
+	}
+	@Override 
+//now equals() is overridden in person class and an attribute through object is compared
+	public boolean equals(Object obj){
+		Person tempPerson = (Person)obj;
+		if (this.panNo == tempPerson.panNo)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+}
+****************************TestPerson******************************************
+
+
+public class TestPerson {
+
+	public static void main(String[] args) {
+		Object p1 = new Person("vaishali","BANDK1627",30); //object parent and person is child
+		Person p2 = new Person("Babitha","JFDA17122",23);
+		Object p3 = new Person("vaishali","BANDK1627",30);
+	    System.out.println(p1.toString());  //override object function toString()
+	    System.out.println(p2);  //calls implicitly acts as primitive variable
+	    System.out.println(p3);
+	    
+//since p1 and p2 are reference variables and not primitive variables 
+	    //they cannot be compared as the reference address is compared, if(p1==p2) hence not same
+	    
+	    if (p1.equals(p3)) //compares references on stack which are unique hence not same
+	    {
+	    	System.out.println("same"); 
+//due to overridden equals() func we can compare 2 objects based on its contents hence no if o/p is same
+	    }
+	    else
+	    {
+	    	System.out.println("not same");
+	    }
+	    
+	}
+
+}

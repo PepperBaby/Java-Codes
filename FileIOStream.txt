@@ -1,0 +1,397 @@
+
+********************************testFileReadDate  & write char by char*******************************************
+
+import java.io.*;
+public class TestFileReadDataDemo {
+
+	public static void main(String[] args) {
+		File myFile = new File("D:/JavaWS/InheritanceAssign/src/Date.java");
+		
+		FileOutputStream fos = null;
+		try 
+		{
+			FileInputStream fis = new FileInputStream(myFile);
+			fos = new FileOutputStream("MyDate.java");
+				int data = fis.read();
+				while (data!=-1)
+				{
+					//for reading only
+					//System.out.print((char)data);
+					//data=fis.read();
+					
+					//for copy write and read
+					fos.write(data);
+					fos.flush();
+					data=fis.read();
+				}
+				System.out.println("All Data is written");
+		} 
+		catch (FileNotFoundException e) 
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		} 
+	}
+
+}
+
+********************************test File Read & write line by line*******************************************
+import java.io.*;
+
+
+public class TestReaderDemo {
+
+	public static void main(String[] args) {
+		FileReader fr = null;
+		FileWriter fw = null;
+		BufferedReader br = null;
+		BufferedWriter bw = null;
+		try
+		{
+			fr = new FileReader("MyDate.java");
+			br = new BufferedReader(fr);
+			fw = new FileWriter("Babitha.txt");
+			bw = new BufferedWriter(fw);
+			String line = br.readLine();
+			
+			while(line!=null)
+			{
+			
+				bw.write(line);
+				bw.newLine();
+				bw.flush();
+				line = br.readLine();
+			}
+			System.out.println("All data writen line by line");
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+
+	}
+
+}
+
+**************************************Read input from user and write in file******************************************************
+
+import java.io.*;
+
+
+public class TestEmp {
+
+	public static void main(String[] args) {
+
+		
+		try 
+		{
+			InputStreamReader isr = new InputStreamReader(System.in);
+			BufferedReader br = new BufferedReader(isr);
+			
+			System.out.println("Enter Emp Id: ");
+			int eid = Integer.parseInt(br.readLine());
+			
+			System.out.println("Enter Emp Name: ");
+			String ename = br.readLine();
+			
+			System.out.println("Enter Emp Salary: ");
+			float eSal = Float.parseFloat(br.readLine());
+			
+			System.out.println(eid + " " + " " + ename + " " + eSal);
+			
+			FileWriter fw = new FileWriter("EmpInfo.txt");
+
+			BufferedWriter bw = new BufferedWriter(fw);
+			Integer eIds = new Integer(eid); //boxing converting primitive datatype into object type 
+			Float esls =new Float(eSal);
+			bw.write("Emp Id: "+eIds.toString());
+			bw.newLine();
+			bw.write("Emp Salary: "+esls.toString());
+			bw.newLine();
+			bw.write("Emp Name: "+ename);
+			bw.flush();
+			System.out.print("Emp Info written in a file.");
+		} 
+		catch (NumberFormatException | IOException e) 
+		{
+			e.printStackTrace();
+		}
+		
+	}
+
+}
+
+*************************************Emp Class to write into file for 'n' emp*******************************************************
+import java.io.Serializable;
+
+
+public class Emp implements Serializable{ //Converting object into file is serialization
+
+	private int empId;
+	private String empName;
+	private float empSal;
+	
+	//Getter and Setters
+	public int getEmpId() {
+		return empId;
+	}
+	public void setEmpId(int empId) {
+		this.empId = empId;
+	}
+	public String getEmpName() {
+		return empName;
+	}
+	public void setEmpName(String empName) {
+		this.empName = empName;
+	}
+	public float getEmpSal() {
+		return empSal;
+	}
+	public void setEmpSal(float empSal) {
+		this.empSal = empSal;
+	}
+	
+	//Constructors
+	public Emp() {
+		
+	}
+	public Emp(int empId, String empName, float empSal) {
+	
+		this.empId = empId;
+		this.empName = empName;
+		this.empSal = empSal;
+	}
+	
+	@Override
+	public String toString() {
+		return "Emp [empId=" + empId + ", empName=" + empName + ", empSal="
+				+ empSal + "]";
+	}
+	
+	
+	
+}
+**********************************enter to emp, ser of one obj to file*******************************************************
+import java.io.*;
+import java.util.Scanner;
+
+
+public class TestSerializationDemo {
+
+	public static void main(String[] args) {
+		Scanner s = new Scanner(System.in);
+		System.out.println("Enter Emp Id: ");
+		int empId = s.nextInt();
+		
+		System.out.println("Enter Emp Name: ");
+		String empName = s.next();
+		
+		System.out.println("Enter Emp Salary: ");
+		Float empSal = s.nextFloat();
+		
+		Emp e1 = new Emp(empId,empName,empSal);
+		
+		FileOutputStream fos;
+		ObjectOutputStream oos;
+		try 
+		{
+			
+			fos = new FileOutputStream("EmpData.obj");
+			oos = new ObjectOutputStream(fos);
+			oos.writeObject(e1);
+			System.out.println("Emp Object is written in a file.");
+			
+			
+			
+		} 
+		catch (IOException e)    //common exception for all IO Class
+		{
+			e.printStackTrace();
+		}
+		
+		
+
+	}
+
+}
+*********************************************read from emp, deser of file to obj***************************************************************
+
+import java.io.*;
+import java.util.Scanner;
+
+public class TestDeserialization {
+
+	public static void main(String[] args) {
+		FileInputStream fis;
+		ObjectInputStream ois;
+	
+		try 
+		{
+			
+			fis = new FileInputStream("EmpData.obj");
+			ois = new ObjectInputStream(fis);
+			
+			Emp e1 = (Emp)ois.readObject();
+			System.out.println("Emp Object is read from+"
+					+ " a file."+e1);
+			
+			
+		} 
+		catch (IOException | ClassNotFoundException e)    //common exception for all IO Class
+		{
+			e.printStackTrace();
+		}
+
+	}
+
+}
+****************************************enter to emp, ser of 3 obj to file**********************************************************
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.util.Scanner;
+
+
+public class Test3Ser {
+
+	public static void main(String[] args) {
+		Emp e[] = new Emp[3];
+		Scanner s = new Scanner(System.in);
+		
+		for(int i = 0; i<3; i++)
+		{
+		System.out.println("Enter Emp Id: ");
+		int empId = s.nextInt();
+		
+		System.out.println("Enter Emp Name: ");
+		String empName = s.next();
+		
+		System.out.println("Enter Emp Salary: ");
+		Float empSal = s.nextFloat();
+		
+		e[i] = new Emp(empId,empName,empSal);
+		}
+		
+		FileOutputStream fos;
+		ObjectOutputStream oos;
+		
+		try 
+		{
+			
+			fos = new FileOutputStream("Emp3.obj");
+			oos = new ObjectOutputStream(fos);
+			for(int i = 0; i<3; i++)
+			{
+				oos.writeObject(e[i]);
+			}
+			System.out.println("Emp Object is written in a file.");
+			
+		} 
+		catch (IOException er)    //common exception for all IO Class
+		{
+			er.printStackTrace();
+		}
+		
+	}
+
+}
+****************************************read from emp, deser of file to obj*************************************************
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
+
+public class TestDeser3 {
+
+	public static void main(String[] args) {
+		FileInputStream fis;
+		ObjectInputStream ois;
+		Emp e[] = new Emp[3];
+		
+		try 
+		{
+			
+			fis = new FileInputStream("Emp3.obj");
+			ois = new ObjectInputStream(fis);
+			for(int i = 0; i<3; i++)
+			{
+			e[i] = (Emp)ois.readObject();
+			System.out.println("Emp Object is read from+"
+					+ " a file."+e[i]);
+			}
+			
+			
+			
+		} 
+		catch (IOException | ClassNotFoundException er)    //common exception for all IO Class
+		{
+			er.printStackTrace();
+		}
+		
+	}
+
+}
+************************************************enter to emp, ser of N obj to file*******************************************************
+import java.io.FileOutputStream;
+		import java.io.IOException;
+		import java.io.ObjectOutputStream;
+		import java.util.Scanner;
+
+public class TestSerN {
+
+	public static void main(String[] args) {
+		
+
+				Emp e[] = new Emp[3];
+				Scanner s = new Scanner(System.in);
+				System.out.println("Enter no of employee: ");
+				int n= s.nextInt();
+				
+				for(int i = 0; i<n; i++)
+				{
+				System.out.println("Enter Emp Id: ");
+				int empId = s.nextInt();
+				
+				System.out.println("Enter Emp Name: ");
+				String empName = s.next();
+				
+				System.out.println("Enter Emp Salary: ");
+				Float empSal = s.nextFloat();
+				
+				e[i] = new Emp(empId,empName,empSal);
+				}
+				
+				FileOutputStream fos;
+				ObjectOutputStream oos;
+				
+				try 
+				{
+					
+					fos = new FileOutputStream("EmpN.obj");
+					oos = new ObjectOutputStream(fos);
+					for(int i = 0; i<n; i++)
+					{
+						oos.writeObject(e[i]);
+					}
+					System.out.println("Emp Object is written in a file.");
+					
+				} 
+				catch (IOException er)    //common exception for all IO Class
+				{
+					er.printStackTrace();
+				}
+				
+			
+		
+
+
+	}
+
+}
+**************************************read from emp, deser of file to obj********************************************
+
+

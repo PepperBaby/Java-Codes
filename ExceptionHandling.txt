@@ -1,0 +1,147 @@
+********************************uncheck*******************************************************
+import java.time.LocalDate;
+import java.util.Scanner;
+
+class Calculator
+{
+	int num1,num2;
+	public Calculator(){}
+	
+	public Calculator(int num1,int num2)
+	{
+		this.num1 = num1;
+		this.num2 = num2;
+	}
+	public int doDivision(){
+		float result = 0.0F;
+		try
+		{
+			result = num1/num2;
+		}
+		catch(ArithmeticException ae)
+		{
+			System.out.println("Please check the divisor \n"+ae.getMessage());
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();	//predefined gives detailed description of exception with graceful termination
+		}
+		return (int)result;
+	}
+}
+
+public class TestCalculator {
+
+	public static void main(String[] args) {
+		Scanner s = new Scanner(System.in);
+		System.out.println("Enter Num1: ");
+		int num1 = s.nextInt();
+		System.out.println("Enter Num2: ");
+		int num2 = s.nextInt();
+		
+		Calculator c = new Calculator(num1,num2);
+		System.out.println("Divison of 2 numbers is: "+c.doDivision());
+		
+		LocalDate today = null;
+		System.out.println("Todays date is: "+today.now());
+
+	}
+
+}
+
+
+
+*********************************checkedException******************************************
+import java.io.IOException;
+
+
+public class ThrowsDemo {
+
+	public void method1() throws IOException
+	{
+		System.out.println("Inside method 1");
+		method2();
+	}
+	public void method2() throws IOException
+	
+	{
+		System.out.println("Inside method 2");
+		throw new IOException();
+	}
+
+	/*public void method2()
+	{
+		System.out.println("Inside method 2");
+		try 
+		{
+			throw new IOException();
+		} 
+		catch (IOException e) 
+		{
+			e.printStackTrace();
+		} //constructor of class IOException
+	}*/
+	
+}
+-------------------------------------------------
+import java.io.IOException;
+
+
+public class TestThrowsDemo {
+
+	public static void main(String[] args) {
+	ThrowsDemo tt = new ThrowsDemo();
+	try {
+		tt.method1();
+	} catch (IOException e) {
+		System.out.println("IOEception coming in et1");
+		e.printStackTrace();
+	}
+
+	}
+
+}
+
+
+
+********************************User Defined checked Exception******************************************
+
+public class LowBalanceException extends Exception //creating user defined exception
+{ 
+	public LowBalanceException(String msg)
+	{
+		super(msg);
+	}
+
+}
+----------------------------------------------------
+import java.util.Scanner;
+
+
+public class TestLowBalanceException {
+
+	public static void main(String[] args) {
+		Scanner s = new Scanner(System.in);
+		int currentBalance = 6000;
+		System.out.println("Enter the Withdraw Amount");
+		int withdrawAmt = s.nextInt();
+		
+		if(withdrawAmt<currentBalance)
+			System.out.println("Ok u have sufficient balance u can withdraw");
+		else
+		{
+			try 
+			{
+				throw new LowBalanceException("Please check balance of ur account");
+			} 
+			catch (LowBalanceException e) 
+			{
+				System.out.println("Insufficient balance in ur acc");
+				e.printStackTrace();
+			}
+		}
+
+	}
+
+}
+

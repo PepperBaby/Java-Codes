@@ -1,0 +1,73 @@
+**********************Printabe************************************
+
+public interface Printable {
+
+	void print();
+	static double PI=3.14566;
+	
+	
+}
+
+
+*********************BoxChild*************************************
+
+public class Box implements Printable{
+	
+	private int height;
+	private int length;
+	private int width;
+	
+	public int getHeight() {
+		return height;
+	}
+	public void setHeight(int height) {
+		this.height = height;
+	}
+	public int getLength() {
+		return length;
+	}
+	public void setLength(int length) {
+		this.length = length;
+	}
+	public int getWidth() {
+		return width;
+	}
+	public void setWidth(int width) {
+		this.width = width;
+	}
+	
+	
+	public Box(int height, int length, int width) {
+		super();
+		this.height = height;
+		this.length = length;
+		this.width = width;
+	}
+	@Override
+	public void print()
+	{
+		System.out.println("Height: "+height);
+		System.out.println("Width: "+width);
+		System.out.println("Length: "+length);
+		
+	}
+	public int calcVol(){
+		return length*height*width;
+	}
+}
+
+
+**********************TestPritable*********************************
+public class TestInterface {
+
+	public static void main(String[] args) {
+		Printable p = new Box(8,9,2); 
+//at compile time only left and right type is checked
+		System.out.println("Box Info: ");
+		p.print();
+		System.out.println("Box vol: "+((Box)p).calcVol()); 
+//At run time there is no method p.calcVol() in Printable hence error
+		
+		
+
+	}
