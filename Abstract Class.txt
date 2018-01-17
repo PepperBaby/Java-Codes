@@ -1,0 +1,100 @@
+***************Abstract***********************************
+
+//abstract class with methods 
+public abstract class Shape {
+
+	public Shape()
+	{}
+	//abstract class can have both abstract and concrete function
+	public  void drawShape()
+	{
+		System.out.println("Shape is drawn with RED");
+		
+	}
+	
+	public abstract double calcArea();
+	public abstract double calcPerimeter();
+}
+
+*********************Concrete Circle***************************
+
+public class Circle extends Shape {
+
+	private int radius;
+	public Circle(){}
+	
+	
+	public int getRadius() {
+		return radius;
+	}
+
+
+	public void setRadius(int radius) {
+		this.radius = radius;
+	}
+
+
+	public Circle(int radius)
+	{
+		this.radius = radius;
+	}
+	
+	@Override
+	public double calcArea() {
+		
+		return (Math.PI*radius*radius);
+	}
+	
+	public double calcPerimeter() {
+		
+		return (2*Math.PI*radius);
+	}
+	
+	
+}
+*************************Sphere inherited from circle*****************
+
+public class Sphere extends Circle{
+
+	public Sphere() {
+		super();
+		
+	}
+
+	public Sphere(int radius) {
+		super(radius);
+		
+	}
+	
+	public double calcArea() {
+		
+		return ((4/3)*Math.PI*(Math.pow(getRadius(),3)));
+	}
+	
+	public double calcPerimeter() {
+		
+		return (4*Math.PI*getRadius()*getRadius());
+	}
+
+}
+****************************Test*********************************
+
+
+public class TestDrawingApp {
+
+	public static void main(String[] args) {
+		Shape shape1 = new Circle(5);
+		Shape shape2 = new Circle(2);
+		Shape shape3 = new Sphere(4);
+	
+		System.out.println("Area of Circle: "+shape1.calcArea());
+		System.out.println("Perimeter of Circle: "+shape1.calcPerimeter());
+		System.out.println("Area of Circle: "+shape2.calcArea());
+		System.out.println("Perimeter of Circle: "+shape2.calcPerimeter());
+		System.out.println("Volume of Sphere: "+shape3.calcArea());
+		System.out.println("Surface Area of Sphere: "+shape3.calcPerimeter());
+
+	}
+
+}
+ 

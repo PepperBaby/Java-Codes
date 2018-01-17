@@ -1,0 +1,144 @@
+**********************TestPackages********************
+import com.cg.bat.*;
+import com.cg.stu.*;
+public class TestStudent {
+
+	public static void main(String[] args) {
+		Batch javaBatch = new Batch("JEE_Propel_001",
+						"8.30 TO 6.00","Babitha Nadar");
+		
+		Batch vnvBatch = new Batch("VNV_PT_002",
+				"9.00 TO 6.00","Pranjali");
+		
+		Batch oraAppBatch = new Batch("OraApp_Abridge_003",
+				"9.00 TO 6.00","Jyoti Mane");
+
+		Student stu1 = new Student(111,"Ronak",90,javaBatch);
+		Student stu4 = new Student(111,"Chamu",95,javaBatch);
+		Student stu2 = new Student(222,"vaibhav",56,vnvBatch);
+		Student stu3 = new Student(333,"Ooha",70,oraAppBatch);
+		
+		System.out.println(stu1.dispStuInfo());
+		System.out.println(stu2.dispStuInfo());
+		System.out.println(stu3.dispStuInfo());
+		System.out.println(stu4.dispStuInfo());
+		
+	}
+
+}
+*********************package com.cg.bat;********************
+
+package com.cg.bat;
+
+public class Batch {
+	
+	private String batchId;
+	private String batchTime;
+	private String batchFaculty;
+	
+	//getters and setters
+	public String getBatchId() {
+		return batchId;
+	}
+	public void setBatchId(String batchId) {
+		this.batchId = batchId;
+	}
+	public String getBatchTime() {
+		return batchTime;
+	}
+	public void setBatchTime(String batchTime) {
+		this.batchTime = batchTime;
+	}
+	public String getBatchFaculty() {
+		return batchFaculty;
+	}
+	public void setBatchFaculty(String batchFaculty) {
+		this.batchFaculty = batchFaculty;
+	}
+	
+	
+	//Constructors
+	public Batch() {
+		
+	}
+	public Batch(String batchId, String batchTime, String batchFaculty) {
+		
+		this.batchId = batchId;
+		this.batchTime = batchTime;
+		this.batchFaculty = batchFaculty;
+	}
+
+	//Display method
+	public String showBatchInfo() {
+		return "Batch [batchId=" + batchId + ", batchTime=" + batchTime
+				+ ", batchFaculty=" + batchFaculty + "]";
+	} 
+
+	
+	
+}
+**************************package com.cg.stu;******************************************
+
+
+
+package com.cg.stu;
+import com.cg.bat.Batch;
+//import com.cg.bat.*; all class
+
+public class Student {
+
+	private int rollNo;
+	private String stuName;
+	private float stuMarks;
+	private Batch stuBatch;
+	
+	//Getters and Setters
+	public int getRollNo() {
+		return rollNo;
+	}
+	public void setRollNo(int rollNo) {
+		this.rollNo = rollNo;
+	}
+	public String getStuName() {
+		return stuName;
+	}
+	public void setStuName(String stuName) {
+		this.stuName = stuName;
+	}
+	public float getStuMarks() {
+		return stuMarks;
+	}
+	public void setStuMarks(float stuMarks) {
+		this.stuMarks = stuMarks;
+	}
+	public Batch getStuBatch() {
+		return stuBatch;
+	}
+	public void setStuBatch(Batch stuBatch) {
+		this.stuBatch = stuBatch;
+	}
+	
+	
+	//Constructors
+	public Student() {
+		super();
+		
+	}
+	public Student(int rollNo, String stuName, float stuMarks, Batch stuBatch) {
+		super();
+		this.rollNo = rollNo;
+		this.stuName = stuName;
+		this.stuMarks = stuMarks;
+		this.stuBatch = stuBatch;
+	}
+	
+	//Display method
+	public String dispStuInfo() {
+		return "Student [rollNo=" + rollNo + ", stuName=" + stuName
+				+ ", stuMarks=" + stuMarks + ", stuBatch=" + stuBatch.showBatchInfo() + "]";
+	}
+	
+	
+	
+	
+}
