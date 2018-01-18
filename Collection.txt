@@ -1,0 +1,410 @@
+hash ordered as user entered, output is in that seq
+tree sorted as per an attribute, ascending 
+
+****************ArrayList****************************
+import java.util.*;
+
+//duplicate accepted and ordered as inserted same seq output 
+public class TestIntArrayListDemo {
+
+	public static void main(String[] args) {
+		
+		ArrayList intList =  new ArrayList();
+		Integer i1 = new Integer(10);  //boxing
+		Integer i2 = new Integer(5);
+		Integer i3 = new Integer(50);
+		Integer i4 = new Integer(34);
+		Integer i5 = new Integer(5);
+		
+		intList.add(i1);
+		intList.add(i2);
+		intList.add(i3);
+		intList.add(i4);
+		intList.add(i5);
+		
+		System.out.println("*********Without iteration*********** ");
+		System.out.println(intList);
+		System.out.println("*********With iteration********** ");
+		Iterator it = intList.iterator();
+		
+		while(it.hasNext())  //check next input
+		{
+			System.out.println(" "+it.next());  //print next input
+		}
+		
+		
+
+	}
+
+}
+******************************ArrayList of Emp class**********************
+import java.util.ArrayList;
+import java.util.Iterator;
+
+
+public class TestEmpArrayListDemo {
+
+	public static void main(String[] args) {
+		ArrayList<Emp> empList = new ArrayList<Emp>();
+		
+		Emp e1 = new Emp(123,"Babitha",150000);
+		Emp e2 = new Emp(456,"Jyoti",150000);
+		Emp e3 = new Emp(789,"Ooha",150000);
+		Emp e4 = new Emp(741,"Chamu",150000);
+		Emp e5 = new Emp(852,"Kitty",150000);
+		
+		empList.add(e1);
+		empList.add(e2);
+		empList.add(e3);
+		empList.add(e4);
+		empList.add(e5);
+		
+		System.out.println("Print without iterator");
+		System.out.println(empList);
+		System.out.println("Print with iterator");
+
+		Iterator<Emp> empListIt = empList.iterator();
+		while(empListIt.hasNext())
+		{
+			Emp tempEmp = empListIt.next();
+			System.out.println("Id: "+tempEmp.getEmpId());
+			System.out.println("Name: "+tempEmp.getEmpName());
+			System.out.println("Salary: "+tempEmp.getEmpSal());
+			System.out.println("________________________________");
+		}
+	}
+
+}
+******************************Hash Code*****************************************
+import java.util.HashSet;
+
+
+public class TestIntHashSetDemo {
+
+	public static void main(String[] args) {
+		HashSet <Integer> intSet = new HashSet<Integer>();
+		Integer i1 = new Integer(10);  //boxing
+		Integer i2 = new Integer(5); 
+		Integer i3 = new Integer(45);
+		Integer i4 = new Integer(34);
+		Integer i5 = new Integer(5);
+		
+//unique(no repeated data) and random(order not according to user insertion)
+		intSet.add(i1);	//hashcode generated is 10
+		intSet.add(i2);  //hashcode generated is 5
+		intSet.add(i3);
+		intSet.add(i4);
+		intSet.add(i5);  //hashcode generated is 5 therefore store in same location
+		
+		System.out.println("Without Iterator: ");
+		System.out.println(intSet);
+	}
+
+}
+***************************Hashcode of Emp*****not unique*************************************
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+
+
+public class TestEmpHashSetDemo {
+
+	public static void main(String[] args) {
+		HashSet<Emp> empSet = new HashSet<Emp>();
+
+//random(order not according to user insertion) 
+		//but not unique hence override hashcode method in Emp from Object class
+		Emp e1 = new Emp(123,"Babitha",150000);
+		Emp e2 = new Emp(456,"Jyoti",150000);
+		Emp e3 = new Emp(789,"Ooha",150000);
+		Emp e4 = new Emp(741,"Chamu",150000);
+		Emp e5 = new Emp(123,"Babitha",150000);
+		
+//Emp does not have hashcode() method but 
+		//object class has hashcode() which generates unique reference based on unique entry on stack
+		empSet.add(e1);  
+		empSet.add(e2);
+		empSet.add(e3);
+		empSet.add(e4);
+		empSet.add(e5);
+		
+		
+
+		
+		for(Emp tempE:empSet)
+		{
+			System.out.println(tempE);
+		}
+		
+	
+
+	}
+
+}
+
+*********************now unique if u execute above program********************
+import java.io.Serializable;
+
+
+public class Emp implements Serializable{ //Converting object into file is serialization
+
+	private int empId;
+	private String empName;
+	private float empSal;
+	
+	//Getter and Setters
+	public int getEmpId() {
+		return empId;
+	}
+	public void setEmpId(int empId) {
+		this.empId = empId;
+	}
+	public String getEmpName() {
+		return empName;
+	}
+	public void setEmpName(String empName) {
+		this.empName = empName;
+	}
+	public float getEmpSal() {
+		return empSal;
+	}
+	public void setEmpSal(float empSal) {
+		this.empSal = empSal;
+	}
+	
+	//Constructors
+	public Emp() {
+		
+	}
+	public Emp(int empId, String empName, float empSal) {
+	
+		this.empId = empId;
+		this.empName = empName;
+		this.empSal = empSal;
+	}
+	
+	@Override
+	public String toString() {
+		return "Emp [empId=" + empId + ", empName=" + empName + ", empSal="
+				+ empSal + "]";
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		Emp emp = (Emp)obj;
+		if(this.empId == emp.empId)
+			return true;
+		else 
+			return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		
+		return empId;
+	}
+	
+	
+	
+}
+************************************Tree Set************************************
+
+
+import java.util.TreeSet;
+
+
+public class TestIntTreeSetDemo {
+
+	public static void main(String[] args) {
+		TreeSet<Integer> intTree =  new TreeSet<Integer>(); 
+		
+		//sorted here
+		Integer i1 = new Integer(10);  //boxing
+		Integer i2 = new Integer(5);
+		Integer i3 = new Integer(45); 
+		Integer i4 = new Integer(34);
+		Integer i5 = new Integer(5);
+		
+		//Sorted and unique
+		intTree.add(i1);
+		intTree.add(i2);
+		intTree.add(i3);
+		intTree.add(i4);
+		intTree.add(i5);
+		
+		System.out.println("*********Without iteration*********** ");
+		System.out.println(intTree);
+	}
+
+}
+***************************************Tree Set of Emp Class***********not sorted*******************
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.TreeSet;
+
+
+public class TestEmpTreeSetDemo {
+
+	public static void main(String[] args) {
+		TreeSet<Emp> empSet = new TreeSet<Emp>();
+		Emp e1 = new Emp(123,"Babitha",150000);
+		Emp e2 = new Emp(456,"Jyoti",150000);
+		Emp e3 = new Emp(789,"Ooha",150000);
+		Emp e4 = new Emp(741,"Chamu",150000);
+		Emp e5 = new Emp(123,"Babitha",150000);
+		
+		empSet.add(e1);  
+		empSet.add(e2);
+		empSet.add(e3);
+		empSet.add(e4);
+		empSet.add(e5);
+		
+		Iterator<Emp> it = empSet.iterator();
+		while(it.hasNext())  //check next input
+		{
+			Emp tempEntry=(Emp)it.next();
+			System.out.println(tempEntry);
+		}
+		
+		
+		/*for(Emp tempE:empSet)
+		{
+			System.out.println(tempE);
+		}
+		*/
+	}
+
+}
+*****************************************sorted if u execute above program after following changes***************************************************
+
+import java.io.Serializable;
+
+
+public class Emp implements Serializable,Comparable<Emp>{ //Converting object into file is serialization
+
+	private int empId;
+	private String empName;
+	private float empSal;
+	
+	//Getter and Setters
+	public int getEmpId() {
+		return empId;
+	}
+	public void setEmpId(int empId) {
+		this.empId = empId;
+	}
+	public String getEmpName() {
+		return empName;
+	}
+	public void setEmpName(String empName) {
+		this.empName = empName;
+	}
+	public float getEmpSal() {
+		return empSal;
+	}
+	public void setEmpSal(float empSal) {
+		this.empSal = empSal;
+	}
+	
+	//Constructors
+	public Emp() {
+		
+	}
+	public Emp(int empId, String empName, float empSal) {
+	
+		this.empId = empId;
+		this.empName = empName;
+		this.empSal = empSal;
+	}
+	
+	@Override
+	public String toString() {
+		return "Emp [empId=" + empId + ", empName=" + empName + ", empSal="
+				+ empSal + "]";
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		Emp emp = (Emp)obj;
+		if(this.empId == emp.empId)
+			return true;
+		else 
+			return false;
+	}
+	
+	@Override
+	public int hashCode() {
+		
+		return empId;
+	}
+	
+	@Override
+	public int compareTo(Emp obj) { //generic type Emp and not Object
+
+		if(this.empId<obj.empId)
+			return -1;
+		else if (this.empId==obj.empId)
+			return 0;
+		else
+			return +1;
+	}
+	
+	
+	
+	
+	
+	
+}
+*******************************HashMap*******************************************************
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
+import java.util.Set;
+
+
+
+public class TestHashMapDemo {
+
+	public static void main(String[] args) {
+		
+		HashMap<Long,String> mobileDirectory = new HashMap<Long,String>();
+		
+		//output is random and unique
+		mobileDirectory.put(5456545646L,"Babitha");
+		mobileDirectory.put(4833674068L,"Jyoti");
+		
+		mobileDirectory.put(6784555656L,"Chamu");
+		mobileDirectory.put(5456545646L,"Babitha");
+		mobileDirectory.put(8796556265L,"Ooha");
+		
+		Set<Entry<Long,String>> setIt = mobileDirectory.entrySet();   
+		
+		//entry in form of map from Hashmap
+		Iterator<Entry<Long,String>> mobIt = setIt.iterator();
+		while(mobIt.hasNext())
+		{
+			Entry<Long,String> dirEntry = mobIt.next();
+			System.out.println("Mobile: "+dirEntry.getKey()+"\tName: "+dirEntry.getValue());
+		}
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

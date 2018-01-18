@@ -1,0 +1,86 @@
+*************create file*********************
+
+
+#This File stores User information
+username=Babitha
+password=Nadar
+location=pune
+state=Maharashtra
+
+**************************read from file using properties************
+
+//Save in project and not in src
+//read from file key and value
+import java.io.FileReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.Properties;
+
+public class TestPropertyFile {
+
+	public static void main(String[] args) 
+	{
+		FileReader fr = null;
+		Properties props = null; //every property have n name n values
+		
+		try 
+		{
+			fr = new FileReader("userInfo.properties");
+			props = new Properties();
+			props.load(fr);
+			System.out.println("****all data***");
+				String propValue1 = props.getProperty("username");
+				System.out.println("User Name: "+ propValue1);
+				
+				String propValue2 = props.getProperty("password");
+				System.out.println("Password: "+ propValue2);
+				
+				String propValue3 = props.getProperty("location");
+				System.out.println("Location: "+ propValue3);
+				
+				String propValue4 = props.getProperty("state");
+				System.out.println("State: "+ propValue4);
+		} 
+		catch (IOException e) 
+		{
+			
+			e.printStackTrace();
+		} 
+
+	}
+
+}
+
+*************************create file using properties***************************
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Properties;
+
+
+public class TestPropWriteDemo {
+
+	public static void main(String[] args) {
+		FileWriter fw = null;
+		Properties pw = null;
+		
+		try 
+		{
+			 fw = new FileWriter("dbInfo.properties");
+			 pw = new Properties();
+			 pw.setProperty("dburl", "jdbc:oracle:thin");
+			 pw.setProperty("dbUserName", "system");
+			 pw.setProperty("dbPwd", "root");
+			 pw.store(fw, "This is Oracle DB credentials");
+			 System.out.println("Data written in prop file");
+		} 
+		catch (IOException e) 
+		{
+			
+			e.printStackTrace();
+		}
+
+	}
+
+}
+
