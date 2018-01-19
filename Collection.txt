@@ -389,7 +389,64 @@ public class TestHashMapDemo {
 	}
 
 }
+*******************************key***************************************
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
 
+
+public class TestHashMapKey {
+
+	public static void main(String[] args) {
+		HashMap<Long,String> mobileDirectly=new HashMap<Long,String>();
+        mobileDirectly.put(8082246498L,"Jyoti");
+        mobileDirectly.put(9865325896L,"Babitha");
+        mobileDirectly.put(965478963L,"Ooha");
+        mobileDirectly.put(4587963258L,"Chamu");
+        mobileDirectly.put(8082246498L,"Jyoti");
+        //Collection c=mobileDirectly.keySet();
+        //Iterator<Long> it=c.iterator();
+        
+        Set<Long> k=mobileDirectly.keySet();
+        Iterator<Long> it=k.iterator();
+        while(it.hasNext())
+        {
+            System.out.println(it.next());
+        }
+        
+        /*for(Long tempKey :k)
+        {
+            System.out.println(tempKey);
+        }*/
+
+	}
+
+}
+********************************Value*****************************
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+
+
+public class TestHashMapValue {
+
+	public static void main(String[] args) {
+		 HashMap<Long,String> mobileDirectly=new HashMap<Long,String>();
+	        mobileDirectly.put(8082246498L,"Jyoti");
+	        mobileDirectly.put(9865325896L,"Babitha");
+	        mobileDirectly.put(965478963L,"Ooha");
+	        mobileDirectly.put(4587963258L,"Chamu");
+	        mobileDirectly.put(8082246498L,"Jyoti");
+	        Collection c=mobileDirectly.values();
+	        Iterator<String> it=c.iterator();
+	        while(it.hasNext())
+	        {
+	            System.out.println(it.next());
+	        }
+
+	}
+
+}
 
 
 

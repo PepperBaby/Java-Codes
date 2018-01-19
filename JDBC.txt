@@ -1,0 +1,191 @@
+create Table emp_142884
+(
+emp_id number primary key,
+emp_name varchar2(10),
+emp_sal number,
+emp_doj date
+);
+
+insert into emp_142884 
+values(123,'Babitha',15000,'13-Dec-2017');
+insert into emp_142884 
+values(456,'Jyoti',15000,'13-Dec-2017');
+insert into emp_142884 
+values(789,'Kitty',15000,'13-Dec-2017');
+
+commit;
+
+classpath:
+C:\oraclexe\app\oracle\product\11.2.0\server\jdbc\lib
+
+
+***********************SELECT**************************************
+
+//import java.sql.Connection;
+import java.sql.*;
+
+public class TestEmpSelectDemo {
+
+	public static void main(String[] args) {
+		//Selected Oracle database and type 4 Driver
+		//Load oracle type 4 driver in memory
+		
+		Connection con = null; 
+		Statement st = null; //used to execute all types of statement
+		ResultSet rs = null;  				//type of collection to hold record
+		
+		try 
+		{
+			Class.forName("oracle.jdbc.driver.OracleDriver");	//optional load driver
+			
+			con=DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE",
+					"System","Capgemini123"); //get Connection Object
+		
+			st=con.createStatement();		//creates sql statement obj to execute in java 
+			
+			String selQry = "SELECT emp_id,emp_name,emp_sal FROM emp_142884";
+			
+			rs = st.executeQuery(selQry);
+		
+			System.out.println("Id\tName\t Salary");
+			
+			//one record
+			//rs.next();
+			
+			//all records
+			while(rs.next())  //iteration like hasNext(); returns true/false if next data exists or not
+			{
+			//For printing fetch data by getters from ResultSet
+			System.out.println(rs.getInt("emp_id")+"\t"+rs.getString("emp_name")+
+					"\t "+rs.getInt("emp_sal"));
+			}
+		} 
+		catch (ClassNotFoundException | SQLException e) 
+		{
+			e.printStackTrace();
+		} 
+	}
+
+
+}
+
+************************************INSERT*************************************************************
+
+//import java.sql.Connection;
+		import java.sql.*;
+public class TestEmpAddDemo {
+
+	public static void main(String[] args) {
+		
+
+
+				//Selected Oracle database and type 4 Driver
+				//Load oracle type 4 driver in memory
+				
+				Connection con = null; 
+				Statement st = null; //used to execute all types of statement
+				ResultSet rs = null;  				//type of collection to hold record
+				
+				try 
+				{
+					Class.forName("oracle.jdbc.driver.OracleDriver");	//optional load driver
+					
+					con=DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE",
+							"System","Capgemini123"); //get Connection Object
+				
+					String insertQry="INSERT INTO emp_142884(emp_id,emp_name,emp_sal) "
+							+ "VALUES (666,'Kavita S',80000)";
+					
+					
+					st = con.createStatement();
+					
+					int data = st.executeUpdate(insertQry);
+					System.out.println("Data inserted in table"+data);
+					
+				}
+				 
+				catch (ClassNotFoundException | SQLException  e) 
+				{
+					e.printStackTrace();
+				} 
+			
+
+
+	}
+
+}
+
+******************************************INSERT DYNAMIC*******************************************************************
+
+import java.sql.*;
+import java.util.Scanner;
+public class TestEmpData3Entry {
+
+	public static void main(String[] args) {
+		Connection con = null; 
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Enter no of insert statements");
+		int n = sc.nextInt();
+		PreparedStatement pst= null;
+		
+		try 
+		{
+			Class.forName("oracle.jdbc.driver.OracleDriver");	//optional load driver
+			
+			con=DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:XE",
+					"System","Capgemini123"); //get Connection Object
+			
+			String insertQry = "INSERT INTO emp_142884(emp_Id,emp_Name,emp_Sal) "  //column name
+					+ "VALUES (?,?,?)";
+			
+			pst = con.prepareStatement(insertQry); 
+			
+		for (int i = 0 ; i<n ; i++)
+		{
+			System.out.println("Enter Id: ");
+			int empId = sc.nextInt();
+			System.out.println("Enter Name: ");
+			String empName = sc.next();
+			System.out.println("Enter Salary: ");
+			float empSal = sc.nextFloat();
+			
+			
+			pst.setInt(1, empId);               //values is set here 
+			pst.setString(2, empName);
+			pst.setFloat(3, empSal);
+			
+			int dataAdded = pst.executeUpdate();  //execution is done here
+			System.out.println("Data is added...." );
+		}
+		
+		}
+		 
+		catch (ClassNotFoundException | SQLException  e) 
+		{
+			e.printStackTrace();
+		} 
+		finally
+		{
+			try 
+			{
+				pst.close();
+				con.close();
+			} 
+			catch (SQLException e) 
+			{			
+				e.printStackTrace();
+			}
+		}
+
+
+	}
+
+}
+*********************************************************************************
+
+
+
+
+
+
+
