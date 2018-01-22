@@ -1,0 +1,470 @@
+*****************Client****************
+package com.cg.empmgm.ui;
+
+import java.util.ArrayList;
+import java.util.Scanner;
+
+import com.cg.empmgm.bean.Employee;
+import com.cg.empmgm.exception.EmployeeException;
+import com.cg.empmgm.service.EmpService;
+import com.cg.empmgm.service.EmpServiceImpl;
+
+public class EmpClient 
+{
+	static Scanner sc = null;
+	static EmpService empSer = null;
+	public static void main(String[] args) 
+	{
+		empSer = new EmpServiceImpl();
+		sc = new Scanner(System.in);
+		int choice = 0;
+		while(true)
+		{
+			System.out.println("What Do u want to Do ? ");
+			System.out.println("1:Add Emp\n 2:Fetch All Emp\n"
+					+ " 3:Delete Emp\n 4:Update Emp\n 5:Exit");
+			choice = sc.nextInt();
+			switch(choice)
+			{
+			case 1: insertEmp();
+			break;
+			case 2: fetchAllEmp();
+			break;
+			case 3: deleteEmp();
+			break;
+			case 4: updateEmp();
+			break;
+			default:System.exit(0);
+			}
+		}
+	}
+	/*
+	 ***********Main ends here **********/
+	public static void insertEmp()
+	{
+		System.out.println("Enter Employee name: ");
+		String enm = sc.next();
+		float esl  = 0.0F;
+		try 
+		{
+			if(empSer.validateName(enm))
+			{
+				System.out.println("Enter Salary: ");
+				esl = sc.nextFloat();
+				Employee ee = new Employee();
+				ee.setEmpName(enm);
+				ee.setEmpSal(esl);
+				int dataAdded = empSer.addEmp(ee);
+				if(dataAdded==1)
+				{
+					System.out.println("Emp Data Added...");
+				}
+				else 
+				{
+					System.out.println("May raise some exception while addition");
+				}
+			}
+		} 
+		catch (EmployeeException e) 
+		{
+			System.out.println(e.getMessage());
+		}
+	}
+	public static void fetchAllEmp()
+	{
+		try 
+		{
+			ArrayList<Employee> empList = empSer.getAllEmp();
+			
+			for(Employee ee:empList)
+			{
+				System.out.println(ee);
+			}
+		} 
+		catch (EmployeeException e)
+		{
+			System.out.println("Some exception while fetching data");
+			e.printStackTrace();
+		}
+	}
+	public static void deleteEmp()
+	{
+		
+	}
+	public static void updateEmp()
+	{
+		
+	}
+}
+*****************************EmpService*********************************
+package com.cg.empmgm.service;
+
+import java.util.ArrayList;
+import com.cg.empmgm.bean.Employee;
+import com.cg.empmgm.exception.EmployeeException;
+
+public interface EmpService {
+
+	public int addEmp(Employee emp)
+			throws EmployeeException;
+	public  ArrayList<Employee> getAllEmp() 
+			throws EmployeeException;
+	public int generateEmpId() 
+			throws EmployeeException;
+
+	public boolean validateDigit(int empId)
+			throws EmployeeException;
+	public boolean validateName(String empName)
+			throws EmployeeException;
+
+
+}
+
+}
+***********************EmpServiceImpl********************************************
+package com.cg.empmgm.service;
+
+import java.util.ArrayList;
+import java.util.regex.Pattern;
+
+import com.cg.empmgm.bean.Employee;
+import com.cg.empmgm.dao.EmpDao;
+import com.cg.empmgm.dao.EmpDaoImpl;
+import com.cg.empmgm.exception.EmployeeException;
+
+public class EmpServiceImpl implements EmpService {
+
+	EmpDao empDao = null;
+	public EmpServiceImpl()
+	{
+		empDao = new EmpDaoImpl();
+	}
+	@Override
+	public int addEmp(Employee emp) throws EmployeeException {
+
+		return empDao.addEmp(emp);
+	}
+
+	@Override
+	public ArrayList<Employee> getAllEmp() throws EmployeeException {
+
+		return empDao.getAllEmp();
+	}
+
+	@Override
+	public int generateEmpId() throws EmployeeException {
+		return empDao.generateEmpId();
+	}
+
+	@Override
+	public boolean validateDigit(int empId) throws EmployeeException 
+	{
+		String numPattern = "[0-9]{4}";
+		if(Pattern.matches(numPattern, new Integer(empId).toString()))
+		{
+			return true;
+		}
+		else
+		{
+			throw new EmployeeException("Only Min 4 digits allowed in empid");
+		}
+	}
+
+	@Override
+	public boolean validateName(String empName) throws EmployeeException 
+	{
+		String namePattern = "[A-Z][a-z]+";
+		if(Pattern.matches(namePattern, empName))
+		{
+			return true;
+		}
+		else
+		{
+			throw new EmployeeException("Only Chars Allowed and "
+					+ "starts with Capital e.g Babitha.");
+		}
+	}
+}
+******************************EmpDao******************************************************
+package com.cg.empmgm.dao;
+
+import java.util.ArrayList;
+import com.cg.empmgm.bean.Employee;
+import com.cg.empmgm.exception.EmployeeException;
+
+public interface EmpDao //generic interface to talk to db, html
+{
+	public int addEmp(Employee emp)
+			throws EmployeeException;
+	public  ArrayList<Employee> getAllEmp() throws EmployeeException;
+	public int generateEmpId() throws EmployeeException;
+
+}
+**************************EmpDaoImpl**********************************
+package com.cg.empmgm.dao;
+
+import java.io.IOException;
+import java.sql.*;
+import java.util.ArrayList;
+
+import com.cg.empmgm.bean.Employee;
+import com.cg.empmgm.exception.EmployeeException;
+import com.cg.empmgm.util.DBUtil;
+
+public class EmpDaoImpl implements EmpDao{
+	//right click add all unimplemented methods from EmpDao interface
+
+	Connection con = null;
+	Statement st = null;
+	PreparedStatement pst = null;
+	ResultSet rs = null;
+
+	@Override
+	public int addEmp(Employee emp) throws EmployeeException  
+	{
+		String insertQry = "INSERT INTO emp_142884(emp_id,emp_name,emp_sal) VALUES(?,?,?)";
+		int dataAdded;
+		try
+		{
+			con=DBUtil.getCon();
+			pst=con.prepareStatement(insertQry);
+			pst.setInt(1, generateEmpId());
+			pst.setString(2, emp.getEmpName());
+			pst.setFloat(3, emp.getEmpSal());
+			dataAdded =pst.executeUpdate();
+
+			/* when u execute insert query 
+			 * only one statement is executed at a time 
+			 * therefore returns '1' always
+			 */
+		} 
+		catch (IOException | SQLException e) 
+		{
+			throw new EmployeeException(e.getMessage());
+		} 
+		finally
+		{
+			try 
+			{
+				pst.close();
+				con.close();
+				
+			} 
+			catch (SQLException e) 
+			{
+				throw new EmployeeException(e.getMessage());
+			}
+		}
+		return dataAdded;
+	}
+
+	@Override
+	public ArrayList<Employee> getAllEmp() throws EmployeeException //select query
+	{
+		ArrayList<Employee> empList = new ArrayList<Employee>();
+		String selectQry = "SELECT * FROM emp_142884";
+		Employee ee = null;
+		try 
+		{
+			con=DBUtil.getCon();
+			st= con.createStatement();
+			rs= st.executeQuery(selectQry);
+			while(rs.next())
+			{
+				ee = new Employee(rs.getInt("emp_id"),
+						rs.getString("emp_name"),rs.getFloat("emp_sal"));
+				empList.add(ee);
+			}
+		} 
+		catch (Exception e) 
+		{
+			throw new EmployeeException(e.getMessage());
+		}
+		finally
+		{
+			try 
+			{
+				rs.close();
+				st.close();
+				con.close();  //ALL JDBC APIs throws SQLException
+			} 
+			catch (SQLException e) 
+			{
+				throw new EmployeeException(e.getMessage());
+			}
+		}
+		return empList;
+	}
+
+	@Override
+	public int generateEmpId() throws EmployeeException //generates sequence for empId
+	{
+		String qry = "SELECT emp_seq.NEXTVAL FROM DUAL";
+		int generatedVal;
+		try
+		{
+			con = DBUtil.getCon();
+			st = con.createStatement();
+			rs = st.executeQuery(qry);
+			rs.next();
+			generatedVal = rs.getInt(1);
+		} 
+		catch (Exception e)
+		{
+			throw new EmployeeException(e.getMessage());
+		}
+		finally
+		{
+			try 
+			{
+				rs.close();
+				st.close();
+				con.close();  //ALL JDBC APIs throws SQLException
+				
+				
+			} 
+			catch (SQLException e) 
+			{
+				throw new EmployeeException(e.getMessage());
+			}
+		}
+		return generatedVal;
+	}
+}
+******************************Employee*********************************
+
+package com.cg.empmgm.bean;
+
+import java.time.LocalDate;
+
+public class Employee 
+{
+	//Variable declaration
+	private int empId;
+	private String empName;
+	private float empSal;
+	private LocalDate empDOJ;
+
+	//Getters and Setters
+	public int getEmpId() {
+		return empId;
+	}
+	public void setEmpId(int empId) {
+		this.empId = empId;
+	}
+	public String getEmpName() {
+		return empName;
+	}
+	public void setEmpName(String empName) {
+		this.empName = empName;
+	}
+	public float getEmpSal() {
+		return empSal;
+	}
+	public void setEmpSal(float empSal) {
+		this.empSal = empSal;
+	}
+	public LocalDate getEmpDOJ() {
+		return empDOJ;
+	}
+	public void setEmpDOJ(LocalDate empDOJ) {
+		this.empDOJ = empDOJ;
+	}
+
+	//OverLoaded Constructor
+	public Employee() 
+	{
+		super();
+	}
+
+	public Employee(int empId, String empName, float empSal, LocalDate empDOJ) {
+		super();
+		this.empId = empId;
+		this.empName = empName;
+		this.empSal = empSal;
+		this.empDOJ = empDOJ;
+	}
+
+	public Employee(int empId, String empName, float empSal) {
+		super();
+		this.empId = empId;
+		this.empName = empName;
+		this.empSal = empSal;
+	}
+
+	//Display method
+	@Override
+	public String toString() {
+		return "Employee [empId=" + empId + ", empName=" + empName
+				+ ", empSal=" + empSal + ", empDOJ=" + empDOJ + "]";
+	}
+}
+***********************Create folder in project and create new file(changeable)*****************************
+
+driverClass=oracle.jdbc.driver.OracleDriver
+dbURL=jdbc:oracle:thin:@localhost:1521:XE
+dbUser=System
+dbPws=Capgemini123
+
+****************************DBUtil***********************************
+
+package com.cg.empmgm.util;
+
+import java.io.FileReader;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Properties;
+
+import com.cg.empmgm.exception.EmployeeException;
+
+public class DBUtil 
+{
+	static String dbunm = null;
+	static String dbpwd = null;
+	static String url = null;
+	
+
+	public static Connection getCon() 
+			throws IOException,EmployeeException,SQLException
+	{
+		Connection con = null;
+		Properties dbInfoProps = DBUtil.getProp();
+		url = dbInfoProps.getProperty("dbURL");
+		dbunm = dbInfoProps.getProperty("dbUser");
+		dbpwd = dbInfoProps.getProperty("dbPws");
+		if(con==null)
+		{
+			con = DriverManager.getConnection(url,dbunm,dbpwd);
+		}
+		return con;
+	}
+
+	public static Properties getProp() 
+			throws IOException,EmployeeException
+	{
+		Properties props = new Properties();
+		FileReader fr = null;
+
+		fr = new FileReader("resourses/dbInfo.properties");
+		props.load(fr);
+
+		return props;
+	}
+}
+************************EmployeeException*********************************
+
+package com.cg.empmgm.exception;
+
+public class EmployeeException extends Exception{
+
+	public EmployeeException(String msg){
+		super(msg);
+	}
+}
+
+
+
+
+
