@@ -1,0 +1,107 @@
+*********************Functional Interface and lamdaExpression*************************
+
+import java.util.Scanner;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+
+@FunctionalInterface
+interface MaxFiner
+{
+	public int  max(int num1,int num2);
+}
+
+/*class MaxFinderImpl implements MaxFiner     //no need of class implementing interface can use lambda expression
+{
+	@Override
+	public int max(int num1,int num2){
+		return num1>num2?num1:num2;
+	}
+}*/
+public class TestScannerDemo {
+
+	public static void main(String[] args) {
+	
+		try(Scanner sc = new Scanner(System.in))
+		{
+			//no warning to close scanner
+			/*MaxFiner mf = new MaxFinderImpl();
+			int max=mf.max(90, 80);
+			System.out.println("Max = "+max);*/
+			
+			//MaxFiner mf = (num1,num2)->num1>num2?num1:num2;
+			//System.out.println("Greatest number is: " + mf.max(60, 90));
+			
+			Consumer<String> consumer = (String str) -> System.out.println(str);
+			consumer.accept("Welcome");
+			
+			Supplier<String> sup = ()-> "Happy New Year"; 
+			System.out.println(sup.get());
+			
+			BiFunction<Integer , Integer, Integer> biFun = (x,y)-> x>y?x:y; 
+			System.out.println("Greatest number is: "+biFun.apply(90, 80));
+			
+			Predicate<Integer> predicate = (num)-> num%2 ==0;
+			System.out.println("Is 4 Even No? "+predicate.test(4));
+			System.out.println("Is 3 Even No? "+predicate.test(3));
+		}
+	}
+}
+*********************Stream APIs*************************
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Stream;
+
+
+public class TestStreamAPIDemo {  //Used to work on collection of data 
+
+	public static void main(String[] args) {
+		List<String> cityList = Arrays.asList("Pune","Mumbai","Nagpur","","Gaziabad","Mumbai","Delhi","");
+		
+		//Convert List to Stream, call distinct function on stream
+		cityList.stream().distinct().forEach(System.out::println);
+		System.out.println("******************************************");
+
+		long cityCount = cityList.stream().distinct().count();
+		System.out.println("How Many Cities? "+cityCount);
+		System.out.println("******************************************");
+		
+		cityList.stream().mapToDouble(str->str.length()).forEach(System.out::println);
+		System.out.println("******************************************");
+		
+		long empStrCount = cityList.stream().filter((String str)->str.isEmpty()).count();
+		System.out.println("Empty String Count : "+empStrCount);
+		
+		
+
+	}
+
+}
+
+OUTPUT:
+
+Pune
+Mumbai
+Nagpur
+
+Gaziabad
+Delhi
+******************************************
+How Many Cities? 6
+******************************************
+4.0
+6.0
+6.0
+0.0
+8.0
+6.0
+5.0
+0.0
+******************************************
+Empty String Count : 2
+
+
+
+
