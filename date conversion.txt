@@ -1,0 +1,38 @@
+Date today = new Date(); 
+// Fri Jun 17 14:54:28 PDT 2016 
+Calendar cal = Calendar.getInstance(); 
+cal.setTime(today); 
+// don't forget this if date is arbitrary e.g. 01-01-2014 
+int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK); // 6 
+int dayOfMonth = cal.get(Calendar.DAY_OF_MONTH); // 17 
+int dayOfYear = cal.get(Calendar.DAY_OF_YEAR); //169 
+int month = cal.get(Calendar.MONTH); // 5 
+int year = cal.get(Calendar.YEAR); // 2016
+
+Read more: http://www.java67.com/2016/12/how-to-get-current-day-month-year-from-date-in-java8.html#ixzz56ODVVs3G
+
+
+LocalDate currentDate = LocalDate.now(); // 2016-06-17 
+DayOfWeek dow = currentDate.getDayOfWeek(); // FRIDAY 
+int dom = currentDate.getDayOfMonth(); // 17 
+int doy = currentDate.getDayOfYear(); // 169 
+Month m = currentDate.getMonth(); // JUNE 
+int y = currentDate.getYear(); // 2016
+
+Read more: http://www.java67.com/2016/12/how-to-get-current-day-month-year-from-date-in-java8.html#ixzz56OE3tmwO
+
+
+LocalDate currentDate = LocalDate.now(); 
+DayOfWeek dow = currentDate.getDayOfWeek(); 
+int dom = currentDate.getDayOfMonth(); 
+int doy = currentDate.getDayOfYear(); 
+Month m = currentDate.getMonth(); 
+int y = currentDate.getYear(); 
+System.out.println("current local date : " + currentDate); 
+System.out.println("dayOfWeek from a date in Java 8 : " + dow);
+ System.out.println("dayOfMonth from date in JDK 8: " + dom); 
+ System.out.println("dayOfYear from a date in Java SE 8 : " + doy); 
+ System.out.println("month from a date in Java 1.8 : " + m); 
+ System.out.println("year from date in JDK 1.8 : " + y);
+
+Read more: http://www.java67.com/2016/12/how-to-get-current-day-month-year-from-date-in-java8.html#ixzz56OETpfCg
